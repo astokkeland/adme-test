@@ -20,7 +20,7 @@ resource "azurerm_subnet" "default" {
 
 resource "azurerm_resource_group_template_deployment" "example" {
   name                = "test"
-  resource_group_name = "rg1"
+  resource_group_name = azurerm_resource_group.default.name
   deployment_mode     = "Incremental"
   parameters_content = jsonencode({
     "name" = {
@@ -33,7 +33,11 @@ resource "azurerm_resource_group_template_deployment" "example" {
     "authAppId" = {
       value ="f37be710-de99-4d1d-bc62-8f5cde53d030"}
     "dataPartitionNames" = {
-      value =["dp1"]}
+      value = [
+        {
+        "name"="dp1"}
+      ]
+    }
     "cmkEnabled" = {
       value =false}
     "encryption" =  {
@@ -45,7 +49,7 @@ resource "azurerm_resource_group_template_deployment" "example" {
     "sku" = {
       value ={
       "name" = "Developer"
-      "tier" = "Developer"
+      "tier" = "Standard"
       }
     }
     "publicNetworkAccess" = {
