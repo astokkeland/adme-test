@@ -23,22 +23,37 @@ resource "azurerm_resource_group_template_deployment" "example" {
   resource_group_name = "rg1"
   deployment_mode     = "Incremental"
   parameters_content = jsonencode({
-    "name" = "test"
-    "location" = "westeurope"
-    "tagsByResource" = {}
-    "authAppId" = "f37be710-de99-4d1d-bc62-8f5cde53d030"
-    "dataPartitionNames" = ["dp1"]
-    "cmkEnabled" = false
-    "encryption" = {}
-    "identity" = {}
-    "corsRules" = []
+    "name" = {
+      value = "test"}
+    "location" = {
+      value ="westeurope"}
+    "tagsByResource" = {
+      value = {}
+    }
+    "authAppId" = {
+      value ="f37be710-de99-4d1d-bc62-8f5cde53d030"}
+    "dataPartitionNames" = {
+      value =["dp1"]}
+    "cmkEnabled" = {
+      value =false}
+    "encryption" =  {
+      value ={}}
+    "identity" = {
+      value ={}}
+    "corsRules" = {
+      value =[]}
     "sku" = {
+      value ={
       "name" = "Developer"
       "tier" = "Developer"
+      }
     }
-    "publicNetworkAccess" = false
-    "privateEndpoints" = [] 
-    "resourceGroupId" = "/subscriptions/417b4d8b-8673-4b95-9e59-429818b22af1/resourceGroups/rg1"
+    "publicNetworkAccess" = {
+      value =false}
+    "privateEndpoints" = {
+      value =[] }
+    "resourceGroupId" ={
+      value = "/subscriptions/417b4d8b-8673-4b95-9e59-429818b22af1/resourceGroups/rg1"}
   })
 
   template_content    = file("template.json")
