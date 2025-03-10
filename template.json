@@ -3,29 +3,22 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "type": "string",
-            "value": "test"
+            "type": "string"
         },
         "location": {
-            "type": "string",
-            "value": "westeurope"
+            "type": "string"
         },
         "tagsByResource": {
             "type": "object"
         },
         "authAppId": {
-            "type": "string",
-            "value": "f37be710-de99-4d1d-bc62-8f5cde53d030"
+            "type": "string"
         },
         "dataPartitionNames": {
-            "type": "array",
-            "value": [
-                "dp1"
-            ]
+            "type": "array"
         },
         "cmkEnabled": {
-            "type": "bool",
-            "value": false
+            "type": "bool"
         },
         "encryption": {
             "type": "object"
@@ -37,48 +30,20 @@
             "type": "array"
         },
         "sku": {
-            "type": "object",
-            "value": {
-                "name": "Developer",
-                "tier": "Developer"
-            }
+            "type": "object"
         },
         "publicNetworkAccess": {
-            "defaultValue": false,
+            "defaultValue": true,
             "type": "bool"
         },
         "privateEndpoints": {
             "type": "array",
             "metadata": {
                 "description": "Private endpoints. Empty if no private network access selected."
-            },
-            "defaultValue": [],
-            "allowedValues": [
-                {
-                    "privateEndpoint": {
-                        "name": "pe1",
-                        "location": "westeurope",
-                        "properties": {
-                            "subnet": {
-                                "id": "/subscriptions/417b4d8b-8673-4b95-9e59-429818b22af1/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"
-                            }
-                        }
-                    },
-                    "resourceGroup": {
-                        "value": {
-                            "name": "rg1"
-                        }
-                    },
-                    "subscription": {
-                        "subscriptionId": "417b4d8b-8673-4b95-9e59-429818b22af1"
-                    }
-                }
-            ]
-
+            }
         },
         "resourceGroupId": {
-            "type": "string",
-            "value": "/subscriptions/417b4d8b-8673-4b95-9e59-429818b22af1/resourceGroups/rg1"
+            "type": "string"
         }
     },
     "resources": [

@@ -17,3 +17,29 @@ resource "azurerm_subnet" "default" {
     address_prefixes     = ["10.0.1.0/24"]
   
 }
+
+resource "azurerm_template_deployment" "terraform-arm" {
+  name                = "adme-test"
+  resource_group_name = azurerm_resource_group.default.name
+
+  template_body = file("template.json")
+
+  parameters = {
+    "name" = "test"
+    "location" = "westeurope"
+    "tagsByResource" = {}
+    "authAppId" = "f37be710-de99-4d1d-bc62-8f5cde53d030"
+    "dataPartitionNames" = ["dp1"]
+    "cmkEnabled" = false
+    "encryption" = {}
+    "identity" = {}
+    "corsRules" = []
+    "sku" = {
+      "name" = "Developer"
+      "tier" = "Developer"
+    }
+    "publicNetworkAccess" = false
+    "privateEndpoints" = [] 
+    "resourceGroupId" = "/subscriptions/417b4d8b-8673-4b95-9e59-429818b22af1/resourceGroups/rg1"
+  }
+}
