@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "default" {
   name     = "rg1"
-  location = "westeurope"
+  location = var.location
 }
 
 resource "azurerm_virtual_network" "adme" {
@@ -18,20 +18,21 @@ resource "azurerm_subnet" "adme" {
   
 }
 
-resource "azurerm_resource_group_template_deployment" "example" {
-  name                = "test"
+resource "azurerm_resource_group_template_deployment" "default" {
+  name                = var.adme_name
   resource_group_name = azurerm_resource_group.default.name
   deployment_mode     = "Incremental"
   parameters_content = jsonencode({
     "name" = {
-      value = "test"}
+      value = "${var.adme_name}"}
     "location" = {
-      value ="westeurope"}
+      value = "${var.location}"}
     "tagsByResource" = {
       value = {}
     }
     "authAppId" = {
-      value ="f37be710-de99-4d1d-bc62-8f5cde53d030"}
+      value ="${var.authAppId}"
+    }
     "dataPartitionNames" = {
       value = [
         {
@@ -56,7 +57,7 @@ resource "azurerm_resource_group_template_deployment" "example" {
     "privateEndpoints" = {
       value =[] }
     "resourceGroupId" ={
-      value = "/subscriptions/417b4d8b-8673-4b95-9e59-429818b22af1/resourceGroups/rg1"}
+      value = "/subscriptions/${var.subscription_id}/resourceGroups/${var.rg_name}"}
   })
 
   template_content    = file("template.json")
@@ -115,7 +116,7 @@ resource "azurerm_application_gateway" "network" {
     rule_set_type = "OWASP"
     rule_set_version = "3.0"
   }
-  
+
   gateway_ip_configuration {
     name      = "my-gateway-ip-configuration"
     subnet_id = azurerm_subnet.appgw.id
