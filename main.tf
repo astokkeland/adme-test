@@ -49,7 +49,6 @@ resource "azurerm_resource_group_template_deployment" "example" {
     "sku" = {
       value ={
       "name" = "Developer"
-      "tier" = "Standard"
       }
     }
     "publicNetworkAccess" = {
