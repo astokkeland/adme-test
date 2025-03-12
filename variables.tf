@@ -1,7 +1,7 @@
 variable "rg_name" {
     description = "The name of the resource group"
     type        = string
-    default     = "rg1"
+    default     = "rg3"
 }
 
 variable "subscription_id" {
@@ -14,7 +14,7 @@ variable "subscription_id" {
 variable "location" {
     description = "The location of the resource group"
     type        = string
-    default     = "westeurope"
+    default     = "northeurope"
   
 }
 
@@ -28,6 +28,42 @@ variable "authAppId" {
 variable "adme_name" {
     description = "The name of the adme instance"
     type        = string
-    default     = "adme-dev"
+    default     = "testdevtest"
   
 }
+
+variable "tenant_id" {
+    description = "The Id of entraID tenant"
+    type        = string
+    default     = "8b87af7d-8647-4dc7-8df4-5f69a2011bb5"
+  
+}
+
+variable "subscription_display_name" {
+    description = "The display name of the subscription"
+    type        = string
+    default     = "ADME Playground"
+
+}
+
+variable "Private_Endpoints_name" {
+    description = "The display name of the Private Endpoint"
+    type        = string
+    default     = "PrivateEndpoint1"
+    
+}
+
+variable "adme_vnet_name" {
+    description = "Name of the vnet where the Private Endpoint will be created"
+    type        = string
+    default     = "vnet_adme"
+    
+}
+
+variable "adme_vnet_subnet_name" {
+    description = "Name of the subnet where the Private Endpoint will be created"
+    type        = string
+    default     = "default"
+    
+}
+
