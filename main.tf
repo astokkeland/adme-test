@@ -1,17 +1,17 @@
 resource "azurerm_resource_group" "default" {
-  name     = "rg1"
+  name     = var.rg_name
   location = var.location
 }
 
 resource "azurerm_virtual_network" "adme" {
-  name                = "vnet_adme"
+  name                = var.adme_vnet_name
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
   address_space       = ["10.0.0.0/16"]
 }
 
 resource "azurerm_subnet" "adme" {
-    name                 = "subnet_adme"
+    name                 = var.adme_vnet_subnet_name
     resource_group_name  = azurerm_resource_group.default.name
     virtual_network_name = azurerm_virtual_network.adme.name
     address_prefixes     = ["10.0.1.0/24"]
@@ -53,9 +53,83 @@ resource "azurerm_resource_group_template_deployment" "default" {
       }
     }
     "publicNetworkAccess" = {
-      value =false}
+      value =true}
     "privateEndpoints" = {
-      value =[] }
+      value =[
+                {
+                    "subscription": {
+                        "authorizationSource": "RoleBased",
+                        "displayName": "${var.subscription_display_name}",
+                        "state": "Enabled",
+                        "subscriptionId": "${var.subscription_id}",
+                        "subscriptionPolicies": {
+                            "locationPlacementId": "Public_2014-09-01",
+                            "quotaId": "Sponsored_2016-01-01"
+                        },
+                        "tenantId": "${var.tenant_id}",
+                        "promotions": [],
+                        "uniqueDisplayName": "${var.subscription_display_name}"
+                    },
+                    "location": {
+                        "id": "/subscriptions/${var.subscription_id}/locations/${var.location}",
+                        "name": "${var.location}",
+                        "displayName": "North Europe",
+                        "regionalDisplayName": "(Europe) North Europe",
+                        "metadata": {
+                            "regionType": "Physical",
+                            "regionCategory": "Recommended",
+                            "geographyGroup": "Europe",
+                            "longitude": "-6.2597",
+                            "latitude": "53.3478",
+                            "physicalLocation": "Ireland",
+                            "pairedRegion": [
+                                {
+                                    "name": "westeurope",
+                                    "id": "/subscriptions/${var.subscription_id}/locations/westeurope"
+                                }
+                            ]
+                        }
+                    },
+                    "resourceGroup": {
+                        "mode": 0,
+                        "value": {
+                            "name": "${var.rg_name}",
+                            "location": "${var.location}",
+                            "provisioningState": "Succeeded"
+                        }
+                    },
+                    "privateEndpoint": {
+                        "id": "/subscriptions/${var.subscription_id}/resourceGroups/${var.rg_name}/providers/Microsoft.Network/privateEndpoints/${var.Private_Endpoints_name}",
+                        "name": "${var.Private_Endpoints_name}",
+                        "location": "${var.location}",
+                        "properties": {
+                            "privateLinkServiceConnections": [
+                                {
+                                    "id": "/subscriptions/${var.subscription_id}/resourceGroups/${var.rg_name}/providers/Microsoft.Network/privateEndpoints/privateLinkServiceConnections/${var.Private_Endpoints_name}_b7efbe6a-12bf-4a1c-80ba-043454ba3015",
+                                    "name": "${var.Private_Endpoints_name}_b7efbe6a-12bf-4a1c-80ba-043454ba3015",
+                                    "properties": {
+                                        "privateLinkServiceId": "/subscriptions/steps('basics').resourceScope.subscription.id/resourceGroups/steps('basics').resourceScope.resourceGroup.id/providers/Microsoft.OpenEnergyPlatform/energyServices",
+                                        "groupIds": [
+                                            "Azure Data Manager for Energy"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "manualPrivateLinkServiceConnections": [],
+                            "subnet": {
+                                "id": "/subscriptions/${var.subscription_id}/resourceGroups/${var.rg_name}/providers/Microsoft.Network/virtualNetworks/${var.adme_vnet_name}/subnets/${var.adme_vnet_subnet_name}"
+                            }
+                        },
+                        "type": "Microsoft.Network/privateEndpoints",
+                        "tags": {}
+                    },
+                    "subResource": {
+                        "groupId": "Azure Data Manager for Energy",
+                        "expectedPrivateDnsZoneName": "[privatelink.energy.azure.com,privatelink.blob.core.windows.net]",
+                        "subResourceDisplayName": "Azure Data Manager for Energy"
+                    }
+                }
+            ] }
     "resourceGroupId" ={
       value = "/subscriptions/${var.subscription_id}/resourceGroups/${var.rg_name}"}
   })
@@ -67,7 +141,7 @@ resource "azurerm_resource_group_template_deployment" "default" {
 
 
 
-resource "azurerm_virtual_network" "appgw" {
+/* resource "azurerm_virtual_network" "appgw" {
   name                = "vn_appgw"
   resource_group_name = azurerm_resource_group.default.name
   location            = azurerm_resource_group.default.location
@@ -161,4 +235,4 @@ resource "azurerm_application_gateway" "network" {
     backend_address_pool_name  = local.backend_address_pool_name
     backend_http_settings_name = local.http_setting_name
   }
-}
+} */
